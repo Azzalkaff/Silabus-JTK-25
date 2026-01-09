@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kurikulum JTK Polban 2025 - View Per Semester</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #0f172a;
+            --secondary: #334155;
+            --accent: #2563eb;
+            --accent-hover: #1d4ed8;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --border: #e2e8f0;
+            --text: #1e293b;
+            --text-muted: #64748b;
+            --teori-color: #d97706;
+            --praktik-color: #059669;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+      body {
+        font-family: 'Inter', sans-serif;
+        margin: 0;
+        padding: 1px;
+     
+        background-color:#fafbfc;
+      
+        background-image: 
+        linear-gradient(rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+        background-size: 70px 70px; 
+        background-attachment: fixed;
+        color: #333;
+}
+      
+      
+        /* Header Section */
+        header {
+            background-color: var(--card-bg);
+            border-bottom: 1px solid var(--border);
+            padding: 1.5rem 1rem;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.25rem;
+        }
+
+        header p {
+            font-size: rem;
+            color: var(--text-muted);
+        }
+
+        /* Navigation Tabs */
+        .nav-container {
+            background-color: var(--card-bg);
+            padding: 0.5rem 1rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            overflow-x: auto; /* Agar bisa discroll di HP */
+        }
+
+        .nav-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            min-width: max-content; /* Mencegah tombol gepeng di HP */
+            padding-bottom: 0.5rem; /* Space untuk scrollbar */
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: 1px solid var(--border);
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            transition: all 0.2s ease;
+        }
+
+        .tab-btn:hover {
+            background-color: #f1f5f9;
+            color: var(--primary);
+        }
+
+        .tab-btn.active {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            box-shadow: 0 4px 6px -1px rgba(15, 23, 42, 0.2);
+        }
+
+        /* Content Area */
+        main {
+            flex: 1;
+            padding: 2rem 1rem;
+            max-width: 1000px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .semester-content {
+            display: none; /* Hidden by default */
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .semester-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Info Card Header */
+        .info-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .info-header h2 {
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+
+        .sks-badge {
+            background-color: var(--accent);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        /* Table Styling */
+        .table-container {
+            background: var(--card-bg);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            overflow: hidden;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            background-color: #f8fafc;
+            font-weight: 600;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover {
+            background-color: #f1f5f9;
+        }
+
+        .code-col {
+            font-family: monospace;
+            color: var(--secondary);
+            font-weight: 600;
+        }
+
+        .center-text { text-align: center; }
+
+        .teori-val { color: var(--teori-color); font-weight: 600; }
+        .praktik-val { color: var(--praktik-color); font-weight: 600; }
+        .total-val { color: var(--primary); font-weight: 700; }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-muted);
+            background: var(--card-bg);
+            border-radius: 12px;
+            border: 2px dashed var(--border);
+        }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            .nav-tabs {
+                justify-content: flex-start; /* Align left for scroll */
+            }
+            
+            th, td {
+                padding: 0.75rem;
+                font-size: 0.85rem;
+            }
+            
+            /* Hide columns on very small screens if needed, or scroll */
+            .table-container {
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Silabus JTK 25</h1>
+        <p>Prodi Teknik Informatika Polban </p>
+    </header>
+
+    <nav class="nav-container">
+        <div class="nav-tabs" id="tab-buttons">
+            </div>
+    </nav>
+
+    <main id="content-area">
+        </main>
+
+    <script>
+        // Data Kurikulum Lengkap
+        const data = [
+            {
+                semester: 1,
+                courses: [
+                    { no: 1, code: "25KJ0002", name: "Pendidikan Pancasila", t: 2, p: 0, total: 2 },
+                    { no: 2, code: "25JG1017", name: "Bahasa Inggris 1", t: 1, p: 1, total: 2 },
+                    { no: 3, code: "25KJ1008", name: "Matematika Terapan A", t: 2, p: 1, total: 3 },
+                    { no: 4, code: "25TI1101", name: "Dasar-Dasar Pemrograman", t: 2, p: 2, total: 4 },
+                    { no: 5, code: "25TI1102", name: "Komputasi Kognitif", t: 2, p: 0, total: 2 },
+                    { no: 6, code: "25TI1103", name: "Konsep TI dan Komunikasi", t: 1, p: 2, total: 3 },
+                    { no: 7, code: "25TI1104", name: "Matematika Diskrit Dasar", t: 2, p: 1, total: 3 },
+                    { no: 8, code: "25KU1020", name: "Literasi Digital", t: 1, p: 0, total: 1 }
+                ]
+            },
+            {
+                semester: 2,
+                courses: [
+                    { no: 1, code: "25KU1001", name: "Pendidikan Agama", t: 2, p: 0, total: 2 },
+                    { no: 2, code: "25KU1007", name: "Bahasa Indonesia", t: 2, p: 0, total: 2 },
+                    { no: 3, code: "25JG1018", name: "Bahasa Inggris 2", t: 1, p: 1, total: 2 },
+                    { no: 4, code: "25TI1105", name: "Struktur Data dan Algoritma", t: 2, p: 2, total: 4 },
+                    { no: 5, code: "25TI1106", name: "Proyek 1: Pengembangan PL Desktop", t: 0, p: 3, total: 3 },
+                    { no: 6, code: "25KU1009", name: "Matematika Terapan Lanjut", t: 3, p: 0, total: 3 },
+                    { no: 7, code: "25TI1107", name: "Teknik Pemrograman", t: 2, p: 2, total: 4 }
+                ]
+            },
+            {
+                semester: 3,
+                courses: [
+                    { no: 1, code: "25TI2101", name: "Arsitektur dan Organisasi Komputer", t: 2, p: 1, total: 3 },
+                    { no: 2, code: "25TI2102", name: "Matematika Diskrit Lanjut", t: 2, p: 1, total: 3 },
+                    { no: 3, code: "25TI2103", name: "Aljabar Linear", t: 2, p: 1, total: 3 },
+                    { no: 4, code: "25TI2104", name: "Sistem Basis Data", t: 2, p: 1, total: 3 },
+                    { no: 5, code: "25TI2105", name: "Programming Language Pragmatics", t: 2, p: 1, total: 3 },
+                    { no: 6, code: "25TI2106", name: "Sistem Operasi", t: 2, p: 1, total: 3 },
+                    { no: 7, code: "25TI2107", name: "Komunikasi Data dan Jaringan", t: 2, p: 1, total: 3 }
+                ]
+            },
+            {
+                semester: 4,
+                courses: [
+                    { no: 1, code: "25TI2108", name: "Analisis & Perancangan PL 1", t: 2, p: 2, total: 4 },
+                    { no: 2, code: "25TI2109", name: "Pemodelan Data", t: 2, p: 2, total: 4 },
+                    { no: 3, code: "25TI2110", name: "Perancangan Antarmuka Pengguna", t: 2, p: 1, total: 3 },
+                    { no: 4, code: "25TI2111", name: "Proyek 2: Aplikasi Saintifik/Data", t: 0, p: 3, total: 3 },
+                    { no: 5, code: "25TI2112", name: "Komputer Grafik", t: 2, p: 1, total: 3 },
+                    { no: 6, code: "25TI2113", name: "Dasar Komunikasi", t: 2, p: 0, total: 2 },
+                    { no: 7, code: "25KO0063", name: "Kewarganegaraan", t: 2, p: 0, total: 2 }
+                ]
+            },
+            {
+                semester: 5,
+                courses: [],
+                note: "Data Semester 5 belum tersedia (dokumen sumber minus sem 5 & 6)."
+            },
+            {
+                semester: 6,
+                courses: [],
+                note: "Data Semester 6 belum tersedia (dokumen sumber minus sem 5 & 6)."
+            },
+            {
+                semester: 7,
+                courses: [
+                    { no: 1, code: "25TI4101", name: "Perangkat Lunak Industri", t: 1, p: 2, total: 3 },
+                    { no: 2, code: "25TI4102", name: "Praktik Kerja Lapangan (PKL)", t: 0, p: 6, total: 6 },
+                    { no: 3, code: "25TI4103", name: "Best Practices RPL", t: 0, p: 4, total: 4 },
+                    { no: 4, code: "25TI4104", name: "Komunikasi Teknis & Bisnis", t: 0, p: 6, total: 6 },
+                    { no: 5, code: "25TI4105", name: "Etika & Aspek Legal Teknologi", t: 1, p: 1, total: 2 },
+                    { no: 6, code: "25TI4106", name: "Proyek 4: Studi Kelayakan R&D", t: 0, p: 2, total: 2 }
+                ]
+            },
+            {
+                semester: 8,
+                courses: [
+                    { no: 1, code: "25TI4107", name: "Manajemen Kualitas Terpadu", t: 2, p: 0, total: 2 },
+                    { no: 2, code: "25JG4008", name: "Academic Writing", t: 1, p: 2, total: 3 },
+                    { no: 3, code: "25TI4108", name: "Tata Tulis Laporan Teknis", t: 0, p: 2, total: 2 },
+                    { no: 4, code: "25TI4109", name: "Proyek 5: Tugas Akhir Mahasiswa", t: 0, p: 4, total: 4 },
+                    { no: 5, code: "25TI4110", name: "Uji Kompetensi", t: 1, p: 0, total: 1 }
+                ]
+            }
+        ];
+
+        // Init Elements
+        const tabContainer = document.getElementById('tab-buttons');
+        const contentContainer = document.getElementById('content-area');
+
+        // Function: Render UI
+        function initApp() {
+            // Render Buttons
+            data.forEach((sem, index) => {
+                const btn = document.createElement('button');
+                btn.className = `tab-btn ${index === 0 ? 'active' : ''}`;
+                btn.innerText = `Semester ${sem.semester}`;
+                btn.onclick = () => switchTab(index, sem.semester);
+                tabContainer.appendChild(btn);
+
+                // Render Content Blocks (Hidden by default except first)
+                const contentDiv = document.createElement('div');
+                contentDiv.id = `sem-${sem.semester}`;
+                contentDiv.className = `semester-content ${index === 0 ? 'active' : ''}`;
+                contentDiv.innerHTML = generateContentHTML(sem);
+                contentContainer.appendChild(contentDiv);
+            });
+        }
+
+        // Function: Switch Logic
+        function switchTab(index, semester) {
+            // Update Buttons
+            const buttons = document.querySelectorAll('.tab-btn');
+            buttons.forEach(b => b.classList.remove('active'));
+            buttons[index].classList.add('active');
+
+            // Update Content
+            const contents = document.querySelectorAll('.semester-content');
+            contents.forEach(c => c.classList.remove('active'));
+            
+            const activeContent = document.getElementById(`sem-${semester}`);
+            if(activeContent) activeContent.classList.add('active');
+        }
+
+        // Function: Generate Table HTML
+        function generateContentHTML(sem) {
+            // Calculate Total SKS
+            const totalSKS = sem.courses.reduce((acc, curr) => acc + curr.total, 0);
+
+            let html = `
+                <div class="info-header">
+                    <h2>Semester ${sem.semester}</h2>
+                    ${sem.courses.length > 0 ? `<div class="sks-badge">Total: ${totalSKS} SKS</div>` : ''}
+                </div>
+            `;
+
+            if (sem.courses.length === 0) {
+                html += `
+                    <div class="empty-state">
+                        <h3>Data Tidak Tersedia</h3>
+                        <p>${sem.note}</p>
+                    </div>
+                `;
+            } else {
+                html += `
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th style="width: 50px;" class="center-text">No</th>
+                                    <th>Kode</th>
+                                    <th>Mata Kuliah</th>
+                                    <th class="center-text" style="width: 80px;">Teori</th>
+                                    <th class="center-text" style="width: 80px;">Praktik</th>
+                                    <th class="center-text" style="width: 80px;">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                `;
+
+                sem.courses.forEach(mk => {
+                    html += `
+                        <tr>
+                            <td class="center-text">${mk.no}</td>
+                            <td class="code-col">${mk.code}</td>
+                            <td>${mk.name}</td>
+                            <td class="center-text teori-val">${mk.t > 0 ? mk.t : '-'}</td>
+                            <td class="center-text praktik-val">${mk.p > 0 ? mk.p : '-'}</td>
+                            <td class="center-text total-val">${mk.total}</td>
+                        </tr>
+                    `;
+                });
+
+                html += `
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+            }
+
+            return html;
+        }
+
+        // Run
+        initApp();
+
+    </script>
+</body>
+</html>
