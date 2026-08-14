@@ -259,6 +259,8 @@
             transform: translateY(20px) scale(0.95);
             transition: all 0.3s ease;
             position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
         }
 
         .modal-overlay.active .modal-content {
@@ -360,19 +362,45 @@
             font-weight: 600;
         }
 
+        .modal-footer {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .sks-detail {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sks-detail .label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: 0.2rem;
+        }
+
+        .sks-detail .value {
+            font-size: 1.25rem;
+        }
+
         /* Responsive */
         @media (max-width: 640px) {
             .nav-tabs { justify-content: flex-start; }
             th, td { padding: 0.75rem; font-size: 0.85rem; }
             .table-container { overflow-x: auto; }
             .modal-content { padding: 1.5rem; }
+            .modal-footer { gap: 1rem; justify-content: space-between; }
         }
     </style>
 </head>
 <body>
     <header>
         <h1>Silabus JTK 25</h1>
-        <p>Prodi Teknik Informatika Polban </p>
+        <p>Prodi Teknik Informatika Polban</p>
     </header>
 
     <nav class="nav-container">
@@ -414,7 +442,7 @@
     </div>
 
     <script>
-        // Data Kurikulum Lengkap (Ditambah Deskripsi untuk Semester 1 & 2)
+        // Data Kurikulum Lengkap (Ditambah Deskripsi untuk Semester 1 - 8)
         const data = [
             {
                 semester: 1,
@@ -564,69 +592,373 @@
             {
                 semester: 3,
                 courses: [
-                    { no: 1, code: "25TI2101", name: "Arsitektur dan Organisasi Komputer", t: 2, p: 1, total: 3 },
-                    { no: 2, code: "25TI2102", name: "Matematika Diskrit Lanjut", t: 2, p: 1, total: 3 },
-                    { no: 3, code: "25TI2103", name: "Aljabar Linear", t: 2, p: 1, total: 3 },
-                    { no: 4, code: "25TI2104", name: "Sistem Basis Data", t: 2, p: 1, total: 3 },
-                    { no: 5, code: "25TI2105", name: "Programming Language Pragmatics", t: 2, p: 1, total: 3 },
-                    { no: 6, code: "25TI2106", name: "Sistem Operasi", t: 2, p: 1, total: 3 },
-                    { no: 7, code: "25TI2107", name: "Komunikasi Data dan Jaringan", t: 2, p: 1, total: 3 }
+                    { 
+                        no: 1, code: "25TI2101", name: "Arsitektur dan Organisasi Komputer", t: 2, p: 1, total: 3,
+                        details: {
+                            firstPrinciple: "Komputer menjembatani abstraksi perangkat lunak ke dalam sirkuit fisik melalui arsitektur set instruksi (ISA) dan organisasi komponen perangkat keras.",
+                            hubungan: ["Sistem Operasi", "Sistem Terdistribusi"],
+                            kompetensi: "Mampu memahami struktur internal CPU, hierarki memori, sistem I/O, dan merancang logika tingkat rendah (assembly).",
+                            keywords: ["CPU Architecture", "Memory Hierarchy", "Assembly Language", "Instruction Set", "I/O Interface"]
+                        }
+                    },
+                    { 
+                        no: 2, code: "25TI2102", name: "Matematika Diskrit Lanjut", t: 2, p: 1, total: 3,
+                        details: {
+                            firstPrinciple: "Struktur graf, otomata, dan kombinatorika adalah model matematis fundamental untuk merancang algoritma pencarian, jaringan, dan kompilator.",
+                            hubungan: ["Struktur Data dan Algoritma", "Komunikasi Data dan Jaringan", "Programming Language Pragmatics"],
+                            kompetensi: "Mampu menyelesaikan masalah diskrit menggunakan teori graf, pohon (trees), rekursi, dan konsep finite state machine.",
+                            keywords: ["Graph Theory", "Combinatorics", "Finite State Machine", "Automata", "Discrete Structures"]
+                        }
+                    },
+                    { 
+                        no: 3, code: "25TI2103", name: "Aljabar Linear", t: 2, p: 1, total: 3,
+                        details: {
+                            firstPrinciple: "Ruang vektor dan matriks menyediakan kerangka kerja matematis mutlak untuk transformasi dimensi, grafik komputer, dan algoritma kecerdasan buatan.",
+                            hubungan: ["Komputer Grafik", "Pengolahan Citra Digital"],
+                            kompetensi: "Mampu melakukan operasi matriks, menghitung determinan/invers, dan memahami konsep ruang vektor serta transformasi linear.",
+                            keywords: ["Matrices", "Vector Spaces", "Linear Transformation", "Eigenvalues", "Dimensionality"]
+                        }
+                    },
+                    { 
+                        no: 4, code: "25TI2104", name: "Sistem Basis Data", t: 2, p: 1, total: 3,
+                        details: {
+                            firstPrinciple: "Data berskala besar harus disimpan secara terstruktur dan bebas anomali agar integritas informasi terjaga serta dapat diakses secara efisien (ACID).",
+                            hubungan: ["Pemodelan Data", "Proyek 3: Aplikasi Enterprise", "Pengembangan Web"],
+                            kompetensi: "Mampu merancang skema database relasional (ERD), melakukan normalisasi data, dan mengimplementasikan query SQL kompleks.",
+                            keywords: ["Relational Database", "SQL", "ER Diagram", "Normalization", "ACID Properties"]
+                        }
+                    },
+                    { 
+                        no: 5, code: "25TI2105", name: "Programming Language Pragmatics", t: 2, p: 1, total: 3,
+                        details: {
+                            firstPrinciple: "Setiap bahasa pemrograman memiliki paradigma dan mekanisme eksekusi yang berbeda (kompilasi vs interpretasi) yang mempengaruhi desain perangkat lunak.",
+                            hubungan: ["Teknik Pemrograman", "Analisis & Perancangan PL 1"],
+                            kompetensi: "Mampu menganalisis komparasi antar bahasa pemrograman dan memahami mekanisme parsing, sintaksis, semantik, serta runtime environment.",
+                            keywords: ["Syntax & Semantics", "Compilers", "Interpreters", "Programming Paradigms", "Runtime"]
+                        }
+                    },
+                    { 
+                        no: 6, code: "25TI2106", name: "Sistem Operasi", t: 2, p: 1, total: 3,
+                        details: {
+                            firstPrinciple: "Sistem Operasi bertindak sebagai manajer sumber daya absolut yang mengabstraksi hardware dan mengatur konkurensi antar proses perangkat lunak.",
+                            hubungan: ["Arsitektur dan Organisasi Komputer", "Sistem Terdistribusi"],
+                            kompetensi: "Mampu mengelola manajemen proses, penjadwalan CPU, manajemen memori (virtual memory), dan sistem file pada lingkungan UNIX/Linux.",
+                            keywords: ["Process Management", "Concurrency", "Memory Management", "File System", "OS Kernel"]
+                        }
+                    },
+                    { 
+                        no: 7, code: "25TI2107", name: "Komunikasi Data dan Jaringan", t: 2, p: 1, total: 3,
+                        details: {
+                            firstPrinciple: "Pertukaran data antar mesin bergantung pada protokol komunikasi yang berlapis (OSI/TCP-IP) untuk memastikan paket data terkirim dengan aman dan andal.",
+                            hubungan: ["Sistem Terdistribusi", "Keamanan Siber"],
+                            kompetensi: "Mampu memahami topologi jaringan, memodelkan layer komunikasi OSI/TCP-IP, serta melakukan konfigurasi dasar routing dan switching.",
+                            keywords: ["OSI Model", "TCP/IP", "Routing", "Switching", "Network Topologies"]
+                        }
+                    }
                 ]
             },
             {
                 semester: 4,
                 courses: [
-                    { no: 1, code: "25TI2108", name: "Analisis & Perancangan PL 1", t: 2, p: 2, total: 4 },
-                    { no: 2, code: "25TI2109", name: "Pemodelan Data", t: 2, p: 2, total: 4 },
-                    { no: 3, code: "25TI2110", name: "Perancangan Antarmuka Pengguna", t: 2, p: 1, total: 3 },
-                    { no: 4, code: "25TI2111", name: "Proyek 2: Aplikasi Saintifik/Data", t: 0, p: 3, total: 3 },
-                    { no: 5, code: "25TI2112", name: "Komputer Grafik", t: 2, p: 1, total: 3 },
-                    { no: 6, code: "25TI2113", name: "Dasar Komunikasi", t: 2, p: 0, total: 2 },
-                    { no: 7, code: "25KO0063", name: "Kewarganegaraan", t: 2, p: 0, total: 2 }
+                    { 
+                        no: 1, code: "25TI2108", name: "Analisis & Perancangan PL 1", t: 2, p: 2, total: 4,
+                        details: {
+                            firstPrinciple: "Kualitas sistem bermula dari pemahaman mendalam terhadap kebutuhan pengguna dan dimodelkan dengan desain arsitektur yang valid sebelum pengkodean.",
+                            hubungan: ["Konsep TI dan Komunikasi", "Teknik Pemrograman", "Proyek 3: Aplikasi Enterprise"],
+                            kompetensi: "Mampu melakukan elisitasi kebutuhan sistem (requirements engineering) dan membuat model rancangan menggunakan diagram UML.",
+                            keywords: ["SDLC", "Requirements Engineering", "UML Modeling", "Use Case", "Software Design"]
+                        }
+                    },
+                    { 
+                        no: 2, code: "25TI2109", name: "Pemodelan Data", t: 2, p: 2, total: 4,
+                        details: {
+                            firstPrinciple: "Kebutuhan analisis modern menuntut skema data yang lebih dari sekadar relasional, membutuhkan pergudangan data (data warehousing) dan database NoSQL.",
+                            hubungan: ["Sistem Basis Data", "Sistem Informasi"],
+                            kompetensi: "Mampu memodelkan multidimensional database, merancang arsitektur Data Warehouse sederhana, dan mengenal konsep database non-relasional (NoSQL).",
+                            keywords: ["Data Warehousing", "NoSQL", "ETL (Extract Transform Load)", "Dimensional Modeling"]
+                        }
+                    },
+                    { 
+                        no: 3, code: "25TI2110", name: "Perancangan Antarmuka Pengguna", t: 2, p: 1, total: 3,
+                        details: {
+                            firstPrinciple: "Teknologi hanya berguna jika dapat diakses oleh manusia secara intuitif. HCI (Human-Computer Interaction) menjembatani fungsionalitas sistem dan psikologi kognitif user.",
+                            hubungan: ["Pengembangan Web", "Proyek 2: Aplikasi Saintifik/Data"],
+                            kompetensi: "Mampu menerapkan prinsip UI/UX, merancang wireframe/prototype interaktif, dan melakukan usability testing pada aplikasi.",
+                            keywords: ["UI/UX Design", "Human-Computer Interaction", "Wireframing", "Prototyping", "Usability Testing"]
+                        }
+                    },
+                    { 
+                        no: 4, code: "25TI2111", name: "Proyek 2: Aplikasi Saintifik/Data", t: 0, p: 3, total: 3,
+                        details: {
+                            firstPrinciple: "Pengembangan perangkat lunak berbasis data membutuhkan integrasi antara algoritma matematika murni, pengolahan data persisten, dan antarmuka yang representatif.",
+                            hubungan: ["Matematika Terapan Lanjut", "Pemodelan Data", "Proyek 1: Pengembangan PL Desktop"],
+                            kompetensi: "Mampu membangun aplikasi terintegrasi dalam tim yang melibatkan kalkulasi saintifik, pemrosesan dataset, dan visualisasi yang interaktif.",
+                            keywords: ["Scientific Computing", "Data Processing", "Team Collaboration", "Software Project", "Data Visualization"]
+                        }
+                    },
+                    { 
+                        no: 5, code: "25TI2112", name: "Komputer Grafik", t: 2, p: 1, total: 3,
+                        details: {
+                            firstPrinciple: "Representasi visual komputasional dihasilkan dari operasi aljabar linear (transformasi, rotasi, scaling) pada koordinat piksel dan vektor di ruang virtual.",
+                            hubungan: ["Aljabar Linear", "Matematika Terapan Lanjut"],
+                            kompetensi: "Mampu mengimplementasikan algoritma primitif grafis (garis, lingkaran), transformasi 2D/3D, dan memahami konsep rendering dasar.",
+                            keywords: ["2D/3D Transformations", "Rendering", "Computer Graphics", "Rasterization", "Vector Graphics"]
+                        }
+                    },
+                    { 
+                        no: 6, code: "25TI2113", name: "Dasar Komunikasi", t: 2, p: 0, total: 2,
+                        details: {
+                            firstPrinciple: "Kemampuan teknis harus diiringi dengan kemampuan artikulasi. Komunikasi efektif mengurangi misinterpretasi dalam manajemen proyek tim IT.",
+                            hubungan: ["Komunikasi Teknis & Bisnis", "Dasar-Dasar Pemrograman"],
+                            kompetensi: "Mampu mengemukakan argumen logis, melakukan presentasi publik dengan percaya diri, dan berinteraksi secara profesional antar rekan kerja.",
+                            keywords: ["Public Speaking", "Interpersonal Communication", "Active Listening", "Professional Pitching"]
+                        }
+                    },
+                    { 
+                        no: 7, code: "25KO0063", name: "Kewarganegaraan", t: 2, p: 0, total: 2,
+                        details: {
+                            firstPrinciple: "Seorang insinyur/profesional IT harus memiliki kesadaran akan identitas nasional dan mematuhi hukum konstitusi negaranya.",
+                            hubungan: ["Pendidikan Pancasila", "Etika & Aspek Legal Teknologi"],
+                            kompetensi: "Mampu menumbuhkan kesadaran berbangsa dan bernegara serta memahami hak dan kewajiban sebagai warga negara yang baik (Good Citizenship).",
+                            keywords: ["Civic Education", "Konstitusi", "Hak & Kewajiban Warga Negara", "Demokrasi"]
+                        }
+                    }
                 ]
             },
             {
                 semester: 5,
                 courses: [
-                    { no: 1, code: "25TI2108", name: "Komputasi Numerik", t: 2, p: 2, total: 4 },
-                    { no: 2, code: "25TI2109", name: "Kewirausahaan", t: 2, p: 2, total: 4 },
-                    { no: 3, code: "25TI2110", name: "Statistika & Probabilitas", t: 2, p: 1, total: 3 },
-                    { no: 4, code: "25TI2111", name: "Sistem Informasi", t: 0, p: 3, total: 3 },
-                    { no: 5, code: "25TI2112", name: "Pengolahan Citra Digital", t: 2, p: 1, total: 3 },
-                    { no: 6, code: "25TI2113", name: "Pengembangan Web", t: 2, p: 0, total: 2 },
+                    { 
+                        no: 1, code: "25TI2108", name: "Komputasi Numerik", t: 2, p: 2, total: 4,
+                        details: {
+                            firstPrinciple: "Banyak model matematika dunia nyata terlalu kompleks untuk diselesaikan secara analitik, sehingga memerlukan pendekatan numerik aproksimasi berulang (iteratif) menggunakan komputer.",
+                            hubungan: ["Matematika Terapan A", "Proyek 2: Aplikasi Saintifik/Data"],
+                            kompetensi: "Mampu mengimplementasikan metode numerik untuk mencari akar persamaan, interpolasi, integrasi numerik, dan menghitung galat (error) komputasi.",
+                            keywords: ["Numerical Analysis", "Approximation", "Error Calculation", "Iterative Methods", "Interpolation"]
+                        }
+                    },
+                    { 
+                        no: 2, code: "25TI2109", name: "Kewirausahaan", t: 2, p: 2, total: 4,
+                        details: {
+                            firstPrinciple: "Inovasi teknologi baru akan berdampak jika memiliki model bisnis yang valid (viability) dan memecahkan masalah pasar yang nyata (desirability).",
+                            hubungan: ["Manajemen Proyek Rekayasa Perangkat Lunak", "Proyek 4: Studi Kelayakan R&D"],
+                            kompetensi: "Mampu merancang model bisnis inovatif (Business Model Canvas), melakukan validasi pasar, dan menyusun rencana rintisan startup teknologi.",
+                            keywords: ["Technopreneurship", "Business Model Canvas", "Startup", "Market Validation", "Pitching"]
+                        }
+                    },
+                    { 
+                        no: 3, code: "25TI2110", name: "Statistika & Probabilitas", t: 2, p: 1, total: 3,
+                        details: {
+                            firstPrinciple: "Dalam dunia yang penuh ketidakpastian (stokastik), pola, tren, dan keputusan rasional dapat ditarik dari sampel data melalui inferensi statistik.",
+                            hubungan: ["Matematika Terapan Lanjut", "Pemodelan Data"],
+                            kompetensi: "Mampu menyajikan data secara deskriptif, memahami distribusi probabilitas, dan melakukan pengujian hipotesis untuk analisis data.",
+                            keywords: ["Descriptive Statistics", "Probability Distributions", "Hypothesis Testing", "Data Inference"]
+                        }
+                    },
+                    { 
+                        no: 4, code: "25TI2111", name: "Sistem Informasi", t: 0, p: 3, total: 3,
+                        details: {
+                            firstPrinciple: "Sistem informasi di level korporat (Enterprise) menyatukan silo-silo departemen (HR, Keuangan, Operasional) menjadi satu aliran data terpadu (ERP).",
+                            hubungan: ["Konsep TI dan Komunikasi", "Pemodelan Data"],
+                            kompetensi: "Mampu menganalisis alur bisnis perusahaan skala menengah dan merancang/mengonfigurasi modul-modul sistem informasi enterprise (seperti Odoo/SAP dasar).",
+                            keywords: ["Enterprise Resource Planning (ERP)", "Business Process Management", "Management Information Systems"]
+                        }
+                    },
+                    { 
+                        no: 5, code: "25TI2112", name: "Pengolahan Citra Digital", t: 2, p: 1, total: 3,
+                        details: {
+                            firstPrinciple: "Gambar digital hanyalah matriks angka. Melalui operasi matematis, komputer dapat melakukan filter, peningkatan kualitas, hingga ekstraksi fitur visual.",
+                            hubungan: ["Komputasi Kognitif", "Aljabar Linear", "Komputer Grafik"],
+                            kompetensi: "Mampu memanipulasi citra digital (filtering, histogram equalization), melakukan segmentasi, serta mendeteksi tepi (edge detection).",
+                            keywords: ["Digital Image Processing", "Spatial Filtering", "Edge Detection", "Image Segmentation", "Computer Vision Basics"]
+                        }
+                    },
+                    { 
+                        no: 6, code: "25TI2113", name: "Pengembangan Web", t: 2, p: 0, total: 2,
+                        details: {
+                            firstPrinciple: "Aplikasi modern diakses via protokol HTTP. Arsitektur web memisahkan tampilan klien (frontend), logika server (backend), dan data (database).",
+                            hubungan: ["Sistem Basis Data", "Sistem Terdistribusi", "Proyek 3: Pengembangan Aplikasi Enterprise"],
+                            kompetensi: "Mampu mengembangkan aplikasi web berbasis framework, mengimplementasikan konsep REST API, dan menghubungkan frontend dengan backend.",
+                            keywords: ["Fullstack Web Development", "REST API", "Frontend Frameworks", "Backend Architecture", "HTTP Protocol"]
+                        }
+                    }
                 ]
             },
             {
                 semester: 6,
                 courses: [
-                    { no: 1, code: "25TI2108", name: "Analisis & Perancangan PL 2", t: 2, p: 2, total: 4 },
-                    { no: 2, code: "25TI2109", name: "Sistem Terdistribusi", t: 2, p: 2, total: 4 },
-                    { no: 3, code: "25TI2110", name: "Pengujian Perangkat Lunak", t: 2, p: 1, total: 3 },
-                    { no: 4, code: "25TI2111", name: "Proyek 3: Pengembangan Aplikasi Enterprise", t: 0, p: 3, total: 3 },
-                    { no: 5, code: "25TI2112", name: "Manajemen Proyek Rekayasa Perangkat Lunak", t: 2, p: 1, total: 3 },
-                    { no: 6, code: "25TI2113", name: "Sistem Terdistribusi", t: 2, p: 0, total: 2 },
-                    { no: 7, code: "25KO0063", name: "Kewarganegaraan", t: 2, p: 0, total: 2 }
+                    { 
+                        no: 1, code: "25TI2108", name: "Analisis & Perancangan PL 2", t: 2, p: 2, total: 4,
+                        details: {
+                            firstPrinciple: "Sistem skala enterprise (besar) memerlukan desain arsitektur yang terukur, dapat dirawat (maintainable), dan menggunakan pola rancangan (Design Patterns) yang teruji.",
+                            hubungan: ["Analisis & Perancangan PL 1", "Sistem Terdistribusi"],
+                            kompetensi: "Mampu menerapkan prinsip-prinsip desain tingkat lanjut (SOLID, Design Patterns) dan merancang arsitektur perangkat lunak berbasis layanan (microservices/SOA).",
+                            keywords: ["Design Patterns", "Software Architecture", "SOLID Principles", "Microservices", "Advanced UML"]
+                        }
+                    },
+                    { 
+                        no: 2, code: "25TI2109", name: "Sistem Terdistribusi", t: 2, p: 2, total: 4,
+                        details: {
+                            firstPrinciple: "Untuk menangani beban (load) masif, aplikasi tidak dijalankan pada satu mesin besar, melainkan dipecah ke ribuan mesin kecil yang terkoordinasi (terdistribusi).",
+                            hubungan: ["Komunikasi Data dan Jaringan", "Pengembangan Web"],
+                            kompetensi: "Mampu mengimplementasikan komunikasi antar mesin (RPC/Message Queue), replikasi data, load balancing, dan memahami konsensus terdistribusi.",
+                            keywords: ["Distributed Systems", "RPC/Message Queues", "Load Balancing", "Fault Tolerance", "Scalability"]
+                        }
+                    },
+                    { 
+                        no: 3, code: "25TI2110", name: "Pengujian Perangkat Lunak", t: 2, p: 1, total: 3,
+                        details: {
+                            firstPrinciple: "Kepercayaan pengguna didapat dari aplikasi yang bebas bug. Pengujian (testing) harus diotomatisasi secara komprehensif mulai dari level fungsi (unit) hingga end-to-end.",
+                            hubungan: ["Teknik Pemrograman", "Analisis & Perancangan PL 2"],
+                            kompetensi: "Mampu menyusun Test Case, melakukan Unit Testing, Integration Testing, dan memahami konsep Test-Driven Development (TDD).",
+                            keywords: ["Software Quality Assurance", "Unit Testing", "Test-Driven Development (TDD)", "Automated Testing", "Whitebox/Blackbox Testing"]
+                        }
+                    },
+                    { 
+                        no: 4, code: "25TI2111", name: "Proyek 3: Pengembangan Aplikasi Enterprise", t: 0, p: 3, total: 3,
+                        details: {
+                            firstPrinciple: "Proyek IT skala besar memerlukan sinkronisasi teknologi terkini (web/mobile, backend API, DB) sekaligus pengelolaan konflik kolaborasi tim.",
+                            hubungan: ["Pengembangan Web", "Sistem Terdistribusi", "Manajemen Proyek RPL"],
+                            kompetensi: "Mampu mendevelop aplikasi bisnis skala enterprise dalam tim menggunakan framework modern, version control system (Git flow), dan deploy ke environment cloud.",
+                            keywords: ["Enterprise Development", "Cloud Deployment", "Agile Teamwork", "Fullstack Implementation", "Version Control"]
+                        }
+                    },
+                    { 
+                        no: 5, code: "25TI2112", name: "Manajemen Proyek Rekayasa Perangkat Lunak", t: 2, p: 1, total: 3,
+                        details: {
+                            firstPrinciple: "RPL bukan hanya masalah teknis, tapi juga manajemen sumber daya. Proyek gagal bukan karena teknologi, melainkan jadwal (waktu) dan anggaran (biaya) yang meleset.",
+                            hubungan: ["Kewirausahaan", "Proyek 3: Pengembangan Aplikasi Enterprise"],
+                            kompetensi: "Mampu merencanakan jadwal proyek (Gantt Chart), estimasi biaya, mengelola risiko, serta mempraktikkan metodologi Agile/Scrum.",
+                            keywords: ["Project Management", "Agile/Scrum", "Risk Management", "Cost Estimation", "Sprint Planning"]
+                        }
+                    },
+                    { 
+                        no: 6, code: "25TI2113", name: "Sistem Terdistribusi (Teori)", t: 2, p: 0, total: 2,
+                        details: {
+                            firstPrinciple: "Di balik implementasi jaringan paralel, terdapat konsep komputasional murni mengenai jam sinkronisasi (logical clocks), algoritma pemilihan pemimpin (leader election), dan keamanan.",
+                            hubungan: ["Sistem Terdistribusi (Praktek)", "Sistem Operasi"],
+                            kompetensi: "Mendalami teori CAP Theorem, algoritma sinkronisasi waktu, paxos/raft untuk konsensus, dan aspek teoretis komputasi paralel.",
+                            keywords: ["CAP Theorem", "Logical Clocks", "Leader Election", "Distributed Consensus"]
+                        }
+                    },
+                    { 
+                        no: 7, code: "25KO0063", name: "Kewarganegaraan (Lanjut)", t: 2, p: 0, total: 2,
+                        details: {
+                            firstPrinciple: "Konteks kewarganegaraan di era digital mencakup keamanan nasional siber dan kedaulatan data suatu bangsa.",
+                            hubungan: ["Pendidikan Pancasila", "Etika & Aspek Legal Teknologi"],
+                            kompetensi: "Mampu memahami geopolitik teknologi, ketahanan informasi nasional, serta implementasi bela negara melalui keahlian IT.",
+                            keywords: ["Kedaulatan Data", "Ketahanan Nasional", "Geopolitik Digital", "Bela Negara IT"]
+                        }
+                    }
                 ]
             },
             {
                 semester: 7,
                 courses: [
-                    { no: 1, code: "25TI4101", name: "Perangkat Lunak Industri", t: 1, p: 2, total: 3 },
-                    { no: 2, code: "25TI4102", name: "Praktik Kerja Lapangan (PKL)", t: 0, p: 6, total: 6 },
-                    { no: 3, code: "25TI4103", name: "Best Practices RPL", t: 0, p: 4, total: 4 },
-                    { no: 4, code: "25TI4104", name: "Komunikasi Teknis & Bisnis", t: 0, p: 6, total: 6 },
-                    { no: 5, code: "25TI4105", name: "Etika & Aspek Legal Teknologi", t: 1, p: 1, total: 2 },
-                    { no: 6, code: "25TI4106", name: "Proyek 4: Studi Kelayakan R&D", t: 0, p: 2, total: 2 }
+                    { 
+                        no: 1, code: "25TI4101", name: "Perangkat Lunak Industri", t: 1, p: 2, total: 3,
+                        details: {
+                            firstPrinciple: "Standar industri menuntut rilis aplikasi yang cepat dan reliabel. Ini dicapai melalui otomatisasi infrastruktur (DevOps) dan pipeline Continuous Integration/Deployment (CI/CD).",
+                            hubungan: ["Sistem Terdistribusi", "Proyek 3: Pengembangan Aplikasi Enterprise"],
+                            kompetensi: "Mampu menggunakan tools industri (Docker, Kubernetes, Jenkins/GitLab CI), serta mengorkestrasi pipeline deployment aplikasi secara otomatis.",
+                            keywords: ["DevOps", "CI/CD Pipeline", "Containerization (Docker)", "Orchestration (Kubernetes)", "Infrastructure as Code"]
+                        }
+                    },
+                    { 
+                        no: 2, code: "25TI4102", name: "Praktik Kerja Lapangan (PKL)", t: 0, p: 6, total: 6,
+                        details: {
+                            firstPrinciple: "Teori akademis harus divalidasi dan diadaptasi dengan realitas tekanan industri (tenggat waktu, requirement berubah, kolaborasi profesional).",
+                            hubungan: ["Semua Mata Kuliah Inti Keahlian"],
+                            kompetensi: "Mampu beradaptasi, berkontribusi secara nyata (hands-on) di industri IT, dan menyerap etos kerja profesional secara langsung di perusahaan.",
+                            keywords: ["Internship", "Industry Experience", "Professional Adaptation", "Real-world Problem Solving"]
+                        }
+                    },
+                    { 
+                        no: 3, code: "25TI4103", name: "Best Practices RPL", t: 0, p: 4, total: 4,
+                        details: {
+                            firstPrinciple: "Kode yang bisa berjalan belum tentu berkualitas. Kode yang baik (clean code) adalah kode yang mudah dibaca, dirawat, dan diskalakan oleh programmer lain.",
+                            hubungan: ["Teknik Pemrograman", "Analisis & Perancangan PL 2"],
+                            kompetensi: "Mampu melakukan code review, refactoring (memperbaiki struktur tanpa mengubah perilaku), dan menerapkan prinsip Clean Architecture.",
+                            keywords: ["Clean Code", "Refactoring", "Code Smells", "Code Review", "Clean Architecture"]
+                        }
+                    },
+                    { 
+                        no: 4, code: "25TI4104", name: "Komunikasi Teknis & Bisnis", t: 0, p: 6, total: 6,
+                        details: {
+                            firstPrinciple: "Seorang engineer tidak hanya bicara dengan mesin, namun harus mampu meyakinkan stakeholder bisnis (klien, investor) menggunakan bahasa yang relevan bagi mereka.",
+                            hubungan: ["Dasar Komunikasi", "Kewirausahaan"],
+                            kompetensi: "Mampu membuat dokumen bisnis teknis (RFP, Pitch Deck), melakukan presentasi korporat tingkat lanjut, dan bernegosiasi bisnis.",
+                            keywords: ["Business Pitching", "Stakeholder Communication", "Technical Documentation", "Negotiation"]
+                        }
+                    },
+                    { 
+                        no: 5, code: "25TI4105", name: "Etika & Aspek Legal Teknologi", t: 1, p: 1, total: 2,
+                        details: {
+                            firstPrinciple: "Teknologi memiliki dampak hukum. Pengembang perangkat lunak terikat pada regulasi privasi data (GDPR/UU ITE), Hak Kekayaan Intelektual, dan lisensi open source.",
+                            hubungan: ["Kewarganegaraan", "Literasi Digital"],
+                            kompetensi: "Mampu mengidentifikasi pelanggaran HKI, mematuhi regulasi perlindungan data pribadi, dan memahami lisensi perangkat lunak (GPL, MIT, dll).",
+                            keywords: ["Cyber Law", "Intellectual Property (IP)", "Data Privacy (GDPR/UU ITE)", "Software Licenses", "IT Ethics"]
+                        }
+                    },
+                    { 
+                        no: 6, code: "25TI4106", name: "Proyek 4: Studi Kelayakan R&D", t: 0, p: 2, total: 2,
+                        details: {
+                            firstPrinciple: "Penelitian/tugas akhir yang baik didahului dengan studi literatur yang kuat dan validasi bahwa masalah yang diangkat layak dan memiliki solusi (feasible).",
+                            hubungan: ["Proyek 5: Tugas Akhir Mahasiswa", "Kewirausahaan"],
+                            kompetensi: "Mampu menyusun proposal riset dasar, melakukan analisis kesenjangan (gap analysis) literatur, dan menguji kelayakan awal (Proof of Concept).",
+                            keywords: ["Feasibility Study", "Research & Development", "Proof of Concept (PoC)", "Literature Review", "Proposal Preparation"]
+                        }
+                    }
                 ]
             },
             {
                 semester: 8,
                 courses: [
-                    { no: 1, code: "25TI4107", name: "Manajemen Kualitas Terpadu", t: 2, p: 0, total: 2 },
-                    { no: 2, code: "25JG4008", name: "Academic Writing", t: 1, p: 2, total: 3 },
-                    { no: 3, code: "25TI4108", name: "Tata Tulis Laporan Teknis", t: 0, p: 2, total: 2 },
-                    { no: 4, code: "25TI4109", name: "Proyek 5: Tugas Akhir Mahasiswa", t: 0, p: 4, total: 4 },
-                    { no: 5, code: "25TI4110", name: "Uji Kompetensi", t: 1, p: 0, total: 1 }
+                    { 
+                        no: 1, code: "25TI4107", name: "Manajemen Kualitas Terpadu", t: 2, p: 0, total: 2,
+                        details: {
+                            firstPrinciple: "Kualitas (Quality) bukan sekadar bebas dari bug, melainkan pemenuhan standar proses industri (ISO/CMMI) dari awal SDLC hingga produk dirilis.",
+                            hubungan: ["Pengujian Perangkat Lunak", "Manajemen Proyek Rekayasa Perangkat Lunak"],
+                            kompetensi: "Mampu memahami konsep Total Quality Management (TQM), model CMMI untuk perusahaan software, dan standar ISO/IEC seri IT.",
+                            keywords: ["Total Quality Management (TQM)", "CMMI Model", "ISO Standards", "Software Quality Metrics"]
+                        }
+                    },
+                    { 
+                        no: 2, code: "25JG4008", name: "Academic Writing", t: 1, p: 2, total: 3,
+                        details: {
+                            firstPrinciple: "Inovasi sains (teknologi) harus disebarluaskan dan dicatat dalam format publikasi global agar dapat dinilai kebenarannya oleh komunitas akademik internasional.",
+                            hubungan: ["Bahasa Inggris 2", "Proyek 5: Tugas Akhir Mahasiswa"],
+                            kompetensi: "Mampu menulis paper penelitian komputasi dalam bahasa Inggris sesuai format jurnal/konferensi internasional (IEEE/ACM style).",
+                            keywords: ["Research Paper", "IEEE Formatting", "Abstract Writing", "International Publication"]
+                        }
+                    },
+                    { 
+                        no: 3, code: "25TI4108", name: "Tata Tulis Laporan Teknis", t: 0, p: 2, total: 2,
+                        details: {
+                            firstPrinciple: "Setiap rekayasa teknik memerlukan dokumentasi resmi sebagai bukti legalitas karya (skripsi) yang bebas plagiarisme dan mematuhi aturan pedoman kampus.",
+                            hubungan: ["Bahasa Indonesia", "Proyek 5: Tugas Akhir Mahasiswa"],
+                            kompetensi: "Mampu menyusun naskah Skripsi/Tugas Akhir secara sistematis, menggunakan tools sitasi (Mendeley), dan memformulasikan bab analisis hasil.",
+                            keywords: ["Penulisan Skripsi", "Citation Management", "Technical Report", "Anti-Plagiarism"]
+                        }
+                    },
+                    { 
+                        no: 4, code: "25TI4109", name: "Proyek 5: Tugas Akhir Mahasiswa", t: 0, p: 4, total: 4,
+                        details: {
+                            firstPrinciple: "Tugas Akhir (Capstone Project) adalah puncak sintesis dari kemampuan logika, manajerial proyek, dan kemampuan komunikasi dalam menciptakan karya komputasi mandiri.",
+                            hubungan: ["Semua Mata Kuliah (Capstone)"],
+                            kompetensi: "Mampu mengidentifikasi masalah nyata, merancang arsitektur sistem sebagai solusi, mengimplementasikan, menguji, dan mempresentasikan hasil secara komprehensif (Sidang TA).",
+                            keywords: ["Capstone Project", "System Implementation", "Final Defense", "Independent Research"]
+                        }
+                    },
+                    { 
+                        no: 5, code: "25TI4110", name: "Uji Kompetensi", t: 1, p: 0, total: 1,
+                        details: {
+                            firstPrinciple: "Validasi keahlian profesi tidak hanya diberikan oleh kampus, melainkan disertifikasi oleh standar industri/lembaga independen (BNSP/Sertifikasi Vendor).",
+                            hubungan: ["Praktik Kerja Lapangan (PKL)", "Semua Mata Kuliah Keahlian"],
+                            kompetensi: "Mampu mengikuti dan lulus evaluasi standar sertifikasi kompetensi (misalnya Programmer, Database Administrator, atau Network Engineer).",
+                            keywords: ["Certification", "BNSP", "Professional Competency", "Skill Validation"]
+                        }
+                    }
                 ]
             }
         ];
@@ -737,7 +1069,6 @@
             document.getElementById('modal-code').innerText = course.code;
             document.getElementById('modal-title').innerText = course.name;
             
-            // Check for new 'details' format (Sem 1) vs old 'desc' format (Sem 2+)
             const modalDesc = document.getElementById('modal-desc');
             if (course.details) {
                 modalDesc.innerHTML = `
