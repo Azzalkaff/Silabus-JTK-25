@@ -26,22 +26,19 @@
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
-      body {
-        font-family: 'Inter', sans-serif;
-        margin: 0;
-        padding: 1px;
-     
-        background-color:#fafbfc;
-      
-        background-image: 
-        linear-gradient(rgba(0, 0, 0, 0.05) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
-        background-size: 70px 70px; 
-        background-attachment: fixed;
-        color: #333;
-}
-      
-      
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 1px;
+            background-color: #fafbfc;
+            background-image: 
+                linear-gradient(rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+            background-size: 70px 70px; 
+            background-attachment: fixed;
+            color: #333;
+        }
+        
         /* Header Section */
         header {
             background-color: var(--card-bg);
@@ -58,7 +55,7 @@
         }
 
         header p {
-            font-size: rem;
+            font-size: 1rem;
             color: var(--text-muted);
         }
 
@@ -70,15 +67,15 @@
             position: sticky;
             top: 0;
             z-index: 100;
-            overflow-x: auto; /* Agar bisa discroll di HP */
+            overflow-x: auto; 
         }
 
         .nav-tabs {
             display: flex;
             justify-content: center;
             gap: 0.5rem;
-            min-width: max-content; /* Mencegah tombol gepeng di HP */
-            padding-bottom: 0.5rem; /* Space untuk scrollbar */
+            min-width: max-content; 
+            padding-bottom: 0.5rem; 
         }
 
         .tab-btn {
@@ -116,7 +113,7 @@
         }
 
         .semester-content {
-            display: none; /* Hidden by default */
+            display: none; 
             animation: fadeIn 0.3s ease-in-out;
         }
 
@@ -186,8 +183,28 @@
             border-bottom: none;
         }
 
-        tr:hover {
+        /* Interactivity on table rows */
+        tbody tr {
+            cursor: pointer;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+        }
+
+        tbody tr:hover {
             background-color: #f1f5f9;
+            transform: scale(1.002);
+            box-shadow: inset 3px 0 0 0 var(--accent);
+        }
+        
+        /* Hint icon on hover */
+        .click-hint {
+            color: var(--accent);
+            opacity: 0;
+            transition: opacity 0.2s;
+            margin-left: 8px;
+            font-size: 0.8rem;
+        }
+        tbody tr:hover .click-hint {
+            opacity: 1;
         }
 
         .code-col {
@@ -197,12 +214,10 @@
         }
 
         .center-text { text-align: center; }
-
         .teori-val { color: var(--teori-color); font-weight: 600; }
         .praktik-val { color: var(--praktik-color); font-weight: 600; }
         .total-val { color: var(--primary); font-weight: 700; }
 
-        /* Empty State */
         .empty-state {
             text-align: center;
             padding: 4rem 2rem;
@@ -212,21 +227,145 @@
             border: 2px dashed var(--border);
         }
 
+        /* Modal Styles */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-content {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            width: 90%;
+            max-width: 700px;
+            padding: 2rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            transform: translateY(20px) scale(0.95);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: translateY(0) scale(1);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+            font-size: 1.5rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            border: none;
+            background: none;
+            transition: color 0.2s;
+        }
+
+        .close-btn:hover {
+            color: #ef4444;
+        }
+
+        .modal-header {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+            padding-right: 2rem; /* Space for close btn */
+        }
+
+        .modal-code {
+            font-family: monospace;
+            color: var(--accent);
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+            display: block;
+        }
+
+        .modal-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary);
+            line-height: 1.4;
+        }
+
+        .modal-body p {
+            color: var(--text);
+            line-height: 1.6;
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Detail Section Styles */
+        .modal-detail-section {
+            margin-bottom: 1.25rem;
+            text-align: left;
+        }
+
+        .modal-detail-section h4 {
+            font-size: 0.85rem;
+            color: var(--primary);
+            margin-bottom: 0.4rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 0.25rem;
+            display: inline-block;
+        }
+
+        .modal-detail-section p {
+            font-size: 0.9rem;
+            margin-bottom: 0;
+            color: var(--secondary);
+        }
+
+        .keyword-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            margin-top: 0.5rem;
+        }
+
+        .keyword-pill {
+            background-color: #e2e8f0;
+            color: #334155;
+            padding: 0.25rem 0.6rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .course-pill {
+            background-color: #dbeafe; /* Warna biru muda untuk mata kuliah */
+            color: #1e40af; /* Biru tua */
+            padding: 0.25rem 0.6rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
         /* Responsive */
         @media (max-width: 640px) {
-            .nav-tabs {
-                justify-content: flex-start; /* Align left for scroll */
-            }
-            
-            th, td {
-                padding: 0.75rem;
-                font-size: 0.85rem;
-            }
-            
-            /* Hide columns on very small screens if needed, or scroll */
-            .table-container {
-                overflow-x: auto;
-            }
+            .nav-tabs { justify-content: flex-start; }
+            th, td { padding: 0.75rem; font-size: 0.85rem; }
+            .table-container { overflow-x: auto; }
+            .modal-content { padding: 1.5rem; }
         }
     </style>
 </head>
@@ -238,38 +377,188 @@
 
     <nav class="nav-container">
         <div class="nav-tabs" id="tab-buttons">
-            </div>
+            <!-- Tabs injected by JS -->
+        </div>
     </nav>
 
     <main id="content-area">
-        </main>
+        <!-- Content injected by JS -->
+    </main>
+
+    <!-- Modal Element -->
+    <div id="courseModal" class="modal-overlay" onclick="handleOutsideClick(event)">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal()" title="Tutup">&times;</button>
+            <div class="modal-header">
+                <span id="modal-code" class="modal-code">KODE</span>
+                <h3 id="modal-title" class="modal-title">Nama Mata Kuliah</h3>
+            </div>
+            <div class="modal-body" id="modal-body-container">
+                <div id="modal-desc">Deskripsi mata kuliah akan muncul di sini.</div>
+            </div>
+            <div class="modal-footer">
+                <div class="sks-detail">
+                    <span class="label">Teori</span>
+                    <span id="modal-t" class="value teori-val">0</span>
+                </div>
+                <div class="sks-detail">
+                    <span class="label">Praktik</span>
+                    <span id="modal-p" class="value praktik-val">0</span>
+                </div>
+                <div class="sks-detail">
+                    <span class="label">Total SKS</span>
+                    <span id="modal-total" class="value total-val">0</span>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script>
-        // Data Kurikulum Lengkap
+        // Data Kurikulum Lengkap (Ditambah Deskripsi untuk Semester 1 & 2)
         const data = [
             {
                 semester: 1,
                 courses: [
-                    { no: 1, code: "25KJ0002", name: "Pendidikan Pancasila", t: 2, p: 0, total: 2 },
-                    { no: 2, code: "25JG1017", name: "Bahasa Inggris 1", t: 1, p: 1, total: 2 },
-                    { no: 3, code: "25KJ1008", name: "Matematika Terapan A", t: 2, p: 1, total: 3 },
-                    { no: 4, code: "25TI1101", name: "Dasar-Dasar Pemrograman", t: 2, p: 2, total: 4 },
-                    { no: 5, code: "25TI1102", name: "Komputasi Kognitif", t: 2, p: 0, total: 2 },
-                    { no: 6, code: "25TI1103", name: "Konsep TI dan Komunikasi", t: 1, p: 2, total: 3 },
-                    { no: 7, code: "25TI1104", name: "Matematika Diskrit Dasar", t: 2, p: 1, total: 3 },
-                    { no: 8, code: "25KU1020", name: "Literasi Digital", t: 1, p: 0, total: 1 }
+                    { 
+                        no: 1, code: "25KJ0002", name: "Pendidikan Pancasila", t: 2, p: 0, total: 2, 
+                        details: {
+                            firstPrinciple: "Nilai-nilai luhur Pancasila adalah fondasi absolut bagi moral, etika, dan pola pikir kebangsaan dalam kehidupan akademik maupun profesional.",
+                            hubungan: ["Kewarganegaraan", "Etika & Aspek Legal Teknologi"],
+                            kompetensi: "Mahasiswa mampu mengintegrasikan nilai-nilai Pancasila dalam pemecahan masalah (problem solving) sosial dan menjunjung tinggi etika profesi.",
+                            keywords: ["Ideologi Negara", "Etika Profesi", "Nasionalisme", "Problem Solving Sosial"]
+                        }
+                    },
+                    { 
+                        no: 2, code: "25JG1017", name: "Bahasa Inggris 1", t: 1, p: 1, total: 2,
+                        details: {
+                            firstPrinciple: "Komunikasi global membutuhkan standarisasi bahasa. Penguasaan tata bahasa dasar adalah kunci penyampaian informasi logis dan terstruktur.",
+                            hubungan: ["Bahasa Inggris 2", "Praktek Koding (Dokumentasi)"],
+                            kompetensi: "Mampu memahami teks teknis dasar, merespon percakapan keseharian di lingkungan kerja, dan menggunakan grammar dasar dengan tepat.",
+                            keywords: ["General English", "Grammar", "Reading Comprehension", "Basic Conversation"]
+                        }
+                    },
+                    { 
+                        no: 3, code: "25KJ1008", name: "Matematika Terapan A", t: 2, p: 1, total: 3,
+                        details: {
+                            firstPrinciple: "Fenomena fisik dan logika komputasi dapat diabstraksikan dan dimodelkan secara kuantitatif melalui fungsi dan kalkulus dasar.",
+                            hubungan: ["Matematika Terapan Lanjut", "Komputasi Numerik"],
+                            kompetensi: "Mampu memodelkan permasalahan sederhana ke dalam persamaan matematis dan menyelesaikannya menggunakan konsep fungsi, limit, dan turunan.",
+                            keywords: ["Kalkulus Dasar", "Limit", "Turunan (Derivative)", "Fungsi Matematis", "Aljabar"]
+                        }
+                    },
+                    { 
+                        no: 4, code: "25TI1101", name: "Dasar-Dasar Pemrograman", t: 2, p: 2, total: 4,
+                        details: {
+                            firstPrinciple: "Komputer mengeksekusi instruksi secara logis, deterministik, dan sekuensial. Masalah kompleks harus dipecah menjadi langkah-langkah dasar (algoritma).",
+                            hubungan: ["Struktur Data", "Teknik Pemrograman (OOP)", "Pengembangan PL Desktop"],
+                            kompetensi: "Mahasiswa mampu merancang algoritma (flowchart) dan menerjemahkannya ke kode program menggunakan bahasa terstruktur (seperti C/C++).",
+                            keywords: ["Algoritma", "Tipe Data", "Struktur Kontrol (If/Else)", "Perulangan (Loop)", "Fungsi/Prosedur"]
+                        }
+                    },
+                    { 
+                        no: 5, code: "25TI1102", name: "Komputasi Kognitif", t: 2, p: 0, total: 2,
+                        details: {
+                            firstPrinciple: "Mesin dapat meniru kecerdasan dan proses kognitif manusia dengan menggunakan heuristik, representasi pengetahuan, dan pencarian pola.",
+                            hubungan: ["Pengolahan Citra Digital", "Data Science (Lanjutan)"],
+                            kompetensi: "Mampu mengidentifikasi karakteristik agen cerdas, menerapkan teknik pencarian (search) dasar, dan memahami arsitektur sistem pakar.",
+                            keywords: ["Artificial Intelligence", "Heuristic Search", "Knowledge Representation", "Cognitive Agent", "Expert Systems"]
+                        }
+                    },
+                    { 
+                        no: 6, code: "25TI1103", name: "Konsep TI dan Komunikasi", t: 1, p: 2, total: 3,
+                        details: {
+                            firstPrinciple: "Teknologi Informasi pada intinya adalah implementasi Sistem Informasi: integrasi harmonis antara manusia, proses bisnis, dan teknologi untuk mengubah data mentah menjadi informasi strategis bagi pengambilan keputusan.",
+                            hubungan: ["Sistem Informasi", "Analisis & Perancangan PL 1", "Komunikasi Teknis & Bisnis"],
+                            kompetensi: "Mampu mengidentifikasi komponen sistem informasi, memodelkan proses bisnis dasar yang didukung TI, serta berkolaborasi dan berkomunikasi secara efektif di lingkungan profesional.",
+                            keywords: ["Sistem Informasi", "Proses Bisnis", "People-Process-Technology", "Pengambilan Keputusan", "Komunikasi Profesional"]
+                        }
+                    },
+                    { 
+                        no: 7, code: "25TI1104", name: "Matematika Diskrit Dasar", t: 2, p: 1, total: 3,
+                        details: {
+                            firstPrinciple: "Karena komputer bekerja pada state diskrit (0 dan 1), logika program, relasi data, dan arsitektur memori diatur sepenuhnya oleh hukum matematika diskrit.",
+                            hubungan: ["Sistem Basis Data", "Struktur Data"],
+                            kompetensi: "Mampu memvalidasi kebenaran argumen dengan logika proposisi, serta menggunakan teori himpunan untuk memodelkan relasi data.",
+                            keywords: ["Logika Proposisi", "Teori Himpunan (Sets)", "Relasi", "Fungsi Pemetaan", "Tabel Kebenaran"]
+                        }
+                    },
+                    { 
+                        no: 8, code: "25KU1020", name: "Literasi Digital", t: 1, p: 0, total: 1,
+                        details: {
+                            firstPrinciple: "Kehidupan di dunia maya memiliki jejak permanen. Pengguna teknologi harus kritis, aman, dan beretika dalam mengkonsumsi serta memproduksi informasi.",
+                            hubungan: ["Etika & Aspek Legal Teknologi", "Keamanan Siber (Lanjutan)"],
+                            kompetensi: "Mampu mengamankan identitas digital, memfilter berita hoaks, dan berinteraksi secara etis (Netiquette) di ekosistem digital.",
+                            keywords: ["Cyber Awareness", "Digital Footprint", "Netiquette", "Data Privacy", "Information Filtering"]
+                        }
+                    }
                 ]
             },
             {
                 semester: 2,
                 courses: [
-                    { no: 1, code: "25KU1001", name: "Pendidikan Agama", t: 2, p: 0, total: 2 },
-                    { no: 2, code: "25KU1007", name: "Bahasa Indonesia", t: 2, p: 0, total: 2 },
-                    { no: 3, code: "25JG1018", name: "Bahasa Inggris 2", t: 1, p: 1, total: 2 },
-                    { no: 4, code: "25TI1105", name: "Struktur Data dan Algoritma", t: 2, p: 2, total: 4 },
-                    { no: 5, code: "25TI1106", name: "Proyek 1: Pengembangan PL Desktop", t: 0, p: 3, total: 3 },
-                    { no: 6, code: "25KU1009", name: "Matematika Terapan Lanjut", t: 3, p: 0, total: 3 },
-                    { no: 7, code: "25TI1107", name: "Teknik Pemrograman", t: 2, p: 2, total: 4 }
+                    { 
+                        no: 1, code: "25KU1001", name: "Pendidikan Agama", t: 2, p: 0, total: 2,
+                        details: {
+                            firstPrinciple: "Integritas, etika, dan spiritualitas adalah pondasi dari profesionalisme sejati yang mencegah penyalahgunaan teknologi.",
+                            hubungan: ["Pendidikan Pancasila", "Etika & Aspek Legal Teknologi"],
+                            kompetensi: "Mampu menerapkan nilai-nilai agama sebagai landasan etika profesi dan kehidupan sosial dalam lingkungan kerja maupun bermasyarakat.",
+                            keywords: ["Spiritualitas", "Etika Profesi", "Toleransi", "Integritas Moral"]
+                        }
+                    },
+                    { 
+                        no: 2, code: "25KU1007", name: "Bahasa Indonesia", t: 2, p: 0, total: 2,
+                        details: {
+                            firstPrinciple: "Penyampaian gagasan teknis secara tertulis memerlukan struktur yang logis, presisi bahasa, dan pemenuhan standar penulisan ilmiah.",
+                            hubungan: ["Tata Tulis Laporan Teknis", "Academic Writing", "Proyek 5: Tugas Akhir"],
+                            kompetensi: "Mampu menyusun dokumen teknis, proposal, dan laporan menggunakan kaidah bahasa Indonesia yang baku dan struktur karya ilmiah yang benar.",
+                            keywords: ["EYD/PUEBI", "Karya Ilmiah", "Sitasi", "Laporan Teknis", "Sistematika Penulisan"]
+                        }
+                    },
+                    { 
+                        no: 3, code: "25JG1018", name: "Bahasa Inggris 2", t: 1, p: 1, total: 2,
+                        details: {
+                            firstPrinciple: "Bahasa Inggris dalam IT bersifat spesifik dan fungsional. Penguasaan kosakata teknis (ESP) mempercepat adaptasi terhadap perkembangan teknologi global.",
+                            hubungan: ["Bahasa Inggris 1", "Academic Writing", "Praktik Kerja Lapangan"],
+                            kompetensi: "Mampu menyajikan presentasi teknis, menulis email profesional, serta memahami dokumentasi teknis (manual book, API docs) secara mandiri.",
+                            keywords: ["ESP (English for Specific Purposes)", "Technical Presentation", "Professional Correspondence", "Documentation"]
+                        }
+                    },
+                    { 
+                        no: 4, code: "25TI1105", name: "Struktur Data dan Algoritma", t: 2, p: 2, total: 4,
+                        details: {
+                            firstPrinciple: "Efisiensi komputasi sangat bergantung pada bagaimana data diorganisasikan dalam memori dan bagaimana algoritma menavigasi struktur memori tersebut.",
+                            hubungan: ["Dasar-Dasar Pemrograman", "Sistem Basis Data", "Analisis & Perancangan PL 1"],
+                            kompetensi: "Mampu mengimplementasikan struktur data (linier/non-linier) dan memilih algoritma yang optimal berdasarkan kompleksitas waktu dan ruang (Big-O).",
+                            keywords: ["Array/Linked List", "Tree/Graph", "Stack/Queue", "Sorting/Searching", "Big-O Notation"]
+                        }
+                    },
+                    { 
+                        no: 5, code: "25TI1106", name: "Proyek 1: Pengembangan PL Desktop", t: 0, p: 3, total: 3,
+                        details: {
+                            firstPrinciple: "Perangkat lunak tidak dibangun hanya dengan menulis kode, melainkan melalui kerja sama tim, integrasi komponen, dan pemecahan masalah end-to-end.",
+                            hubungan: ["Dasar-Dasar Pemrograman", "Teknik Pemrograman", "Proyek 2: Aplikasi Saintifik"],
+                            kompetensi: "Mampu berkolaborasi dalam tim kecil untuk mengembangkan, menguji, dan merilis program aplikasi desktop berbasis GUI sederhana.",
+                            keywords: ["GUI Application", "Teamwork", "Software Integration", "Debugging", "Dasar Version Control"]
+                        }
+                    },
+                    { 
+                        no: 6, code: "25KU1009", name: "Matematika Terapan Lanjut", t: 3, p: 0, total: 3,
+                        details: {
+                            firstPrinciple: "Transformasi ruang, pergerakan objek komputasional, dan prediksi data saintifik dikendalikan oleh fungsi matriks, vektor, dan kalkulus.",
+                            hubungan: ["Matematika Terapan A", "Komputasi Numerik", "Komputer Grafik", "Statistika & Probabilitas"],
+                            kompetensi: "Mampu menggunakan konsep matriks, vektor, integral, dan persamaan diferensial untuk memodelkan sistem dan mengolah data.",
+                            keywords: ["Matriks & Vektor", "Aljabar Linear Dasar", "Integral", "Persamaan Diferensial"]
+                        }
+                    },
+                    { 
+                        no: 7, code: "25TI1107", name: "Teknik Pemrograman", t: 2, p: 2, total: 4,
+                        details: {
+                            firstPrinciple: "Entitas dunia nyata dapat dimodelkan sebagai objek perangkat lunak yang memiliki state (atribut) dan behavior (metode), membuat kode lebih modular dan reusable.",
+                            hubungan: ["Dasar-Dasar Pemrograman", "Analisis & Perancangan PL 1", "Proyek 1: Pengembangan PL Desktop"],
+                            kompetensi: "Mampu merancang dan mengimplementasikan program menggunakan paradigma Object-Oriented Programming (OOP) yang bersih (clean code).",
+                            keywords: ["Object-Oriented Programming", "Classes & Objects", "Inheritance", "Polymorphism", "Encapsulation"]
+                        }
+                    }
                 ]
             },
             {
@@ -299,7 +588,7 @@
             {
                 semester: 5,
                 courses: [
-                    { no: 1, code: "25TI2108", name: "komputasi Numerik", t: 2, p: 2, total: 4 },
+                    { no: 1, code: "25TI2108", name: "Komputasi Numerik", t: 2, p: 2, total: 4 },
                     { no: 2, code: "25TI2109", name: "Kewirausahaan", t: 2, p: 2, total: 4 },
                     { no: 3, code: "25TI2110", name: "Statistika & Probabilitas", t: 2, p: 1, total: 3 },
                     { no: 4, code: "25TI2111", name: "Sistem Informasi", t: 0, p: 3, total: 3 },
@@ -342,7 +631,6 @@
             }
         ];
 
-        // Init Elements
         const tabContainer = document.getElementById('tab-buttons');
         const contentContainer = document.getElementById('content-area');
 
@@ -356,16 +644,16 @@
                 btn.onclick = () => switchTab(index, sem.semester);
                 tabContainer.appendChild(btn);
 
-                // Render Content Blocks (Hidden by default except first)
+                // Render Content Blocks
                 const contentDiv = document.createElement('div');
                 contentDiv.id = `sem-${sem.semester}`;
                 contentDiv.className = `semester-content ${index === 0 ? 'active' : ''}`;
-                contentDiv.innerHTML = generateContentHTML(sem);
+                contentDiv.innerHTML = generateContentHTML(sem, index);
                 contentContainer.appendChild(contentDiv);
             });
         }
 
-        // Function: Switch Logic
+        // Function: Switch Tab Logic
         function switchTab(index, semester) {
             // Update Buttons
             const buttons = document.querySelectorAll('.tab-btn');
@@ -380,9 +668,8 @@
             if(activeContent) activeContent.classList.add('active');
         }
 
-        // Function: Generate Table HTML
-        function generateContentHTML(sem) {
-            // Calculate Total SKS
+        // Function: Generate Table HTML with Interaction (onclick)
+        function generateContentHTML(sem, semIndex) {
             const totalSKS = sem.courses.reduce((acc, curr) => acc + curr.total, 0);
 
             let html = `
@@ -416,12 +703,16 @@
                             <tbody>
                 `;
 
-                sem.courses.forEach(mk => {
+                sem.courses.forEach((mk, courseIndex) => {
+                    // Added onclick event to trigger the modal
                     html += `
-                        <tr>
+                        <tr onclick="openModal(${semIndex}, ${courseIndex})" title="Klik untuk melihat detail mata kuliah">
                             <td class="center-text">${mk.no}</td>
                             <td class="code-col">${mk.code}</td>
-                            <td>${mk.name}</td>
+                            <td>
+                                ${mk.name}
+                                <span class="click-hint">(Lihat Detail)</span>
+                            </td>
                             <td class="center-text teori-val">${mk.t > 0 ? mk.t : '-'}</td>
                             <td class="center-text praktik-val">${mk.p > 0 ? mk.p : '-'}</td>
                             <td class="center-text total-val">${mk.total}</td>
@@ -435,11 +726,77 @@
                     </div>
                 `;
             }
-
             return html;
         }
 
-        // Run
+        // Function to open Modal and inject specific course data
+        function openModal(semIndex, courseIndex) {
+            const course = data[semIndex].courses[courseIndex];
+            
+            // Populate Modal Fields
+            document.getElementById('modal-code').innerText = course.code;
+            document.getElementById('modal-title').innerText = course.name;
+            
+            // Check for new 'details' format (Sem 1) vs old 'desc' format (Sem 2+)
+            const modalDesc = document.getElementById('modal-desc');
+            if (course.details) {
+                modalDesc.innerHTML = `
+                    <div class="modal-detail-section">
+                        <h4>1. First Principle</h4>
+                        <p>${course.details.firstPrinciple}</p>
+                    </div>
+                    <div class="modal-detail-section">
+                        <h4>2. Hubungan Mata Kuliah</h4>
+                        <div class="keyword-container">
+                            ${Array.isArray(course.details.hubungan) 
+                                ? course.details.hubungan.map(mk => `<span class="course-pill">${mk}</span>`).join('')
+                                : `<p>${course.details.hubungan}</p>`}
+                        </div>
+                    </div>
+                    <div class="modal-detail-section">
+                        <h4>3. Kompetensi Diharapkan</h4>
+                        <p>${course.details.kompetensi}</p>
+                    </div>
+                    <div class="modal-detail-section">
+                        <h4>4. Keywords & Terms</h4>
+                        <div class="keyword-container">
+                            ${course.details.keywords.map(kw => `<span class="keyword-pill">${kw}</span>`).join('')}
+                        </div>
+                    </div>
+                `;
+            } else {
+                const descText = course.desc ? course.desc : "Deskripsi mendetail untuk mata kuliah ini sedang dalam proses penyusunan/update.";
+                modalDesc.innerHTML = `<p>${descText}</p>`;
+            }
+            
+            document.getElementById('modal-t').innerText = course.t;
+            document.getElementById('modal-p').innerText = course.p;
+            document.getElementById('modal-total').innerText = course.total;
+
+            // Show Modal
+            document.getElementById('courseModal').classList.add('active');
+        }
+
+        // Function to close Modal
+        function closeModal() {
+            document.getElementById('courseModal').classList.remove('active');
+        }
+
+        // Close modal when clicking on the overlay background
+        function handleOutsideClick(event) {
+            if (event.target.id === 'courseModal') {
+                closeModal();
+            }
+        }
+        
+        // Listen for ESC key to close modal
+        document.addEventListener('keydown', function(event) {
+            if (event.key === "Escape") {
+                closeModal();
+            }
+        });
+
+        // Run Application
         initApp();
 
     </script>
