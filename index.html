@@ -353,9 +353,18 @@
             font-weight: 600;
         }
 
-        .course-pill {
+        .course-pill-blue {
             background-color: #dbeafe; /* Warna biru muda untuk mata kuliah */
             color: #1e40af; /* Biru tua */
+            padding: 0.25rem 0.6rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .course-pill-green {
+            background-color: #d1fae5; /* Warna hijau muda untuk MK sebelumnya */
+            color: #065f46; /* Hijau tua */
             padding: 0.25rem 0.6rem;
             border-radius: 12px;
             font-size: 0.75rem;
@@ -1111,6 +1120,81 @@
         // Function to close Modal
         function closeModal() {
             document.getElementById('courseModal').classList.remove('active');
+        }
+
+        // Helper function to determine relationship color (Green if previous semester)
+        function getCourseRelationType(relatedCourseName, currentSemester) {
+            const normalizedSearch = relatedCourseName.toLowerCase().trim();
+            let foundSemester = null;
+
+            for (const sem of data) {
+                for (const c of sem.courses) {
+                    const courseNameNormalized = c.name.toLowerCase().trim();
+                    // Cocokkan sebagian nama jika ada variasi string seperti "(Lanjutan)"
+                    if (normalizedSearch.includes(courseNameNormalized) || courseNameNormalized.includes(normalizedSearch)) {
+                        foundSemester = sem.semester;
+                        break;
+                    }
+                }
+                if (foundSemester) break;
+            }
+
+            if (foundSemester && foundSemester < currentSemester) {
+                return 'previous';
+            }
+            return 'other';
+        }
+
+        // Function to open Modal and inject specific course data
+        function openModal(semIndex, courseIndex) {
+            const course = data[semIndex].courses[courseIndex];
+            const currentSemester = data[semIndex].semester;
+            
+            // Populate Modal Fields
+            document.getElementById('modal-code').innerText = course.code;
+            document.getElementById('modal-title').innerText = course.name;
+            
+            const modalDesc = document.getElementById('modal-desc');
+            if (course.details) {
+                modalDesc.innerHTML = `
+                    <div class="modal-detail-section">
+                        <h4>1. First Principle</h4>
+                        <p>${course.details.firstPrinciple}</p>
+                    </div>
+                    <div class="modal-detail-section">
+                        <h4>2. Hubungan Mata Kuliah</h4>
+                        <div class="keyword-container">
+                            ${Array.isArray(course.details.hubungan) 
+                                ? course.details.hubungan.map(mk => {
+                                    const relType = getCourseRelationType(mk, currentSemester);
+                                    const pillClass = relType === 'previous' ? 'course-pill-green' : 'course-pill-blue';
+                                    return `<span class="${pillClass}">${mk}</span>`;
+                                }).join('')
+                                : `<p>${course.details.hubungan}</p>`}
+                        </div>
+                    </div>
+                    <div class="modal-detail-section">
+                        <h4>3. Kompetensi Diharapkan</h4>
+                        <p>${course.details.kompetensi}</p>
+                    </div>
+                    <div class="modal-detail-section">
+                        <h4>4. Keywords & Terms</h4>
+                        <div class="keyword-container">
+                            ${course.details.keywords.map(kw => `<span class="keyword-pill">${kw}</span>`).join('')}
+                        </div>
+                    </div>
+                `;
+            } else {
+                const descText = course.desc ? course.desc : "Deskripsi mendetail untuk mata kuliah ini sedang dalam proses penyusunan/update.";
+                modalDesc.innerHTML = `<p>${descText}</p>`;
+            }
+            
+            document.getElementById('modal-t').innerText = course.t;
+            document.getElementById('modal-p').innerText = course.p;
+            document.getElementById('modal-total').innerText = course.total;
+
+            // Show Modal
+            document.getElementById('courseModal').classList.add('active');
         }
 
         // Close modal when clicking on the overlay background
